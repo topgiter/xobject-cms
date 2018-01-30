@@ -1,0 +1,19 @@
+.table-title {
+    svg {
+        cursor: pointer;
+    }
+
+    .title {
+        font-size: 20px;
+        color: #333;
+        font-weight: 700;
+        margin-left: 4px;
+        margin-right: 8px;
+    }
+
+    .counts {
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(255, 0, 0, 0.7);
+    }
+}

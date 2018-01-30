@@ -1,0 +1,47 @@
+.search-bar {
+    position: absolute;
+    left: 20%;
+    display: inline-block;
+    z-index: 10;
+    color: white;
+
+    form {
+        margin-top: 10px;
+
+        label {
+            margin-right: 8px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        input {
+            margin-right: 8px;
+            font-size: 16px;
+            height: 26px;
+            padding: 4px;
+        }
+
+        .btn-search {
+            height: 28px;
+            margin-top: 1px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .icon-cog {
+            margin-left: 4px;
+            vertical-align: text-top;
+        }
+    }
+
+    &.results-search-bar {
+        position: relative;
+        left: 14px;
+
+        form {
+            label {
+                color: #204b6c;
+            }
+        }
+    }
+}

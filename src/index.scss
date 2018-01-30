@@ -1,0 +1,17 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #204b6c;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#root {
+    height: 100%;
+}
+
+input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+}
