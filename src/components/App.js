@@ -5,13 +5,6 @@ import React, { Component } from 'react';
 import Wrapper from './Layout/Wrapper/Wrapper';
 import SearchBar from './Layout/SearchBar/SearchBar';
 import SearchResults from './SearchResults/SearchResults';
-import DetailsView from './DetailsView/DetailsView';
-
-// constants
-export const ACTIVE_WIN_TYPE = {
-    SEARCH_RESULTS: 'SEARCH_RESULTS',
-    DETAILS_VIEW: 'DETAILS_VIEW',
-};
 
 class App extends Component {
     constructor(props) {
@@ -19,44 +12,50 @@ class App extends Component {
 
         this.state = {
             term: '',
-            activeWindow: '',
+            showResults: false,
         };
 
         this.handleSearch = this.handleSearch.bind(this);
-        this.handleActiveWindow = this.handleActiveWindow.bind(this);
+        this.handleChangeTerm = this.handleChangeTerm.bind(this);
+        this.handleCloseSearchResults = this.handleCloseSearchResults.bind(this);
     }
 
     handleSearch(term) {
         this.setState({
             term,
-            activeWindow: ACTIVE_WIN_TYPE.SEARCH_RESULTS
+            showResults: true,
         });
     }
 
-    handleActiveWindow(activeWindow) {
-        this.setState({ activeWindow });
+    handleChangeTerm(term) {
+        this.setState({
+            term
+        });
+    }
+
+    handleCloseSearchResults() {
+        this.setState({
+            showResults: false
+        });
     }
 
     render() {
-        const { activeWindow } = this.state;
-
+        const { term, showResults } = this.state;
+        
         return (
             <Wrapper>
-                <SearchBar onSubmit={(term) => this.handleSearch(term)} />
+                <SearchBar
+                    term={term}
+                    onSubmit={this.handleSearch}
+                />
 
-                {(activeWindow === ACTIVE_WIN_TYPE.SEARCH_RESULTS) && (
+                {(showResults) && (
                     <SearchResults
-                        handleActiveWindow={this.handleActiveWindow}
-                        gotoDtailsView={this.handleActiveWindow}
+                        term={term}
+                        onChangeTerm={this.handleChangeTerm}
+                        onClose={this.handleCloseSearchResults}
                     />
                 )}
-
-                {(activeWindow === ACTIVE_WIN_TYPE.DETAILS_VIEW) && (
-                    <DetailsView
-                        handleActiveWindow={this.handleActiveWindow}
-                    />
-                )}
-
             </Wrapper>
         );
     }

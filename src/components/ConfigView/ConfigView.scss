@@ -1,4 +1,4 @@
-.details-view {
+.config-view {
     .title {
         text-align: center;
         background-color: #224979;
@@ -11,12 +11,17 @@
         padding-top: 20px;
         padding-bottom: 20px;
     }
+
+    .col-no-padding {
+        padding-left: 0;
+        padding-right: 0;
+    }
 }
 
-.details-view-trans-appear {
+.config-view-trans-appear {
     opacity: 0.01;
 
-    &.details-view-trans-appear-active {
+    &.config-view-trans-appear-active {
         opacity: 1;
         transition: opacity .3s ease-in;
     }

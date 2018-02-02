@@ -6,6 +6,7 @@ import { Form, FormGroup, FormControl, ControlLabel, Button } from 'react-bootst
 import './SearchBar.css';
 
 const propTypes = {
+    term: PropTypes.string,
     className: PropTypes.string,
     cogIcon: PropTypes.bool,
     onSubmit: PropTypes.func.isRequired,
@@ -13,6 +14,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+    term: '',
     className: 'search-bar',
     cogIcon: true,
     onSubmit: (val) => {},
@@ -24,8 +26,14 @@ class SearchBar extends React.Component {
         super(props);
 
         this.state = {
-            value: ''
+            term: props.term
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.term !== this.props.term) {
+            this.setState({ term: nextProps.term });
+        }
     }
 
     render() {
@@ -43,15 +51,15 @@ class SearchBar extends React.Component {
                             <FormControl
                                 type="text"
                                 placeholder="search..."
-                                value={this.state.value}
-                                onChange={(e) => this.setState({ value: e.target.value })}
+                                value={this.state.term}
+                                onChange={(e) => this.setState({ term: e.target.value })}
                             />
                         )}
                         {(isSearch) && (
                             <Button
                                 className="btn-search"
                                 bsStyle="danger"
-                                onClick={() => onSubmit(this.state.value)}
+                                onClick={() => onSubmit(this.state.term)}
                             >
                                 Search
                             </Button>

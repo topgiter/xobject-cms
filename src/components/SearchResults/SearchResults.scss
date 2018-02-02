@@ -9,7 +9,8 @@
     color: #333;
     font-size: 14px;
     border: 2px solid #ccc;
-    z-index: 9999;
+    z-index: 9;
+
 }
 
 .search-result-trans-appear {
@@ -17,6 +18,6 @@
 
     &.search-result-trans-appear-active {
         opacity: 1;
-        transition: opacity .5s ease-in;
+        transition: opacity .3s ease-in;
     }
 }

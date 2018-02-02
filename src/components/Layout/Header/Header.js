@@ -8,7 +8,8 @@ import './Header.css';
 import logo from '../../../assets/images/activeprime_logo.png';
 
 const propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+    term: PropTypes.string,
+    onSubmit: PropTypes.func,
     onClickConfig: PropTypes.func,
     onClickGotoSearch: PropTypes.func,
     onClose: PropTypes.func.isRequired,
@@ -17,12 +18,15 @@ const propTypes = {
 };
 
 const defaultProps = {
+    term: '',
     onClickConfig: () => {},
     onClickGotoSearch: () => {},
+    onSubmit: () => {},
     isSearch: true,
 }
 
 const Header = ({
+    term,
     onSubmit,
     onClickConfig,
     onClickGotoSearch,
@@ -35,6 +39,7 @@ const Header = ({
             <img src={logo} alt="company logo" onClick={onLogoClick} />
 
             <SearchBar
+                term={term}
                 isSearch={isSearch}
                 className="search-bar results-search-bar"
                 cogIcon={false}

@@ -20,6 +20,10 @@ const defaultProps = {
     coreBankSystems: []
 };
 
+function createMarkup(html) {
+    return {__html: html};
+}
+
 class CoreBankSystemTable extends React.Component {
     constructor(props) {
         super(props);
@@ -62,16 +66,26 @@ class CoreBankSystemTable extends React.Component {
                         className="green-header"
                     >
                         {coreBankSystems.length > 0 && coreBankSystems.map((coreBankSystem, idx) => (
-                            <TRow key={`coreBankSystems-${idx}`}>
+                            <TRow key={`coreBankSystems-${coreBankSystem.id}`}>
                                 <TCell><span className="action">Update</span></TCell>
                                 <TCell><span className="action">Copy</span></TCell>
                                 <TCell>{coreBankSystem.match}</TCell>
-                                <TCell>{coreBankSystem.name}</TCell>
-                                <TCell>{coreBankSystem.investAcctDesc}</TCell>
-                                <TCell>{coreBankSystem.investAcctBalance}</TCell>
-                                <TCell>{coreBankSystem.nextMaturityDate}</TCell>
-                                <TCell>{coreBankSystem.bankingAcct}</TCell>
-                                <TCell>{coreBankSystem.bankingAcctBalance}</TCell>
+                                <TCell>{coreBankSystem.full_name}</TCell>
+                                <TCell>
+                                    <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.investment_account_desc)} />
+                                </TCell>
+                                <TCell>
+                                    <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.investment_account_balance)} />
+                                </TCell>
+                                <TCell>
+                                    <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.next_maturity_date)} />
+                                </TCell>
+                                <TCell>
+                                    <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.banking_account)} />
+                                </TCell>
+                                <TCell>
+                                    <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.banking_account_balance)} />
+                                </TCell>
                             </TRow>
                         ))}
 
