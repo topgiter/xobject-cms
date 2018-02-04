@@ -15,6 +15,10 @@ import { ACTIVE_WIN_TYPE } from '../SearchResults';
 // Styles
 import './ContactsTable.css';
 
+
+// Mock data
+import mockData from '../../../mock/data.json';
+
 // Prop types
 const propTypes = {
     contacts: PropTypes.array,
@@ -51,6 +55,22 @@ class ContactsTable extends React.Component {
                 sortedIndice:[...Array(nextProps.contacts.length).keys()]
             });
         }
+    }
+
+    isRelated(id) {
+        const { filters } = this.props;
+
+        if (filters.length === 0) return true;
+
+        const { relations } = mockData;
+
+        for (let k = 0; k < filters.length; k++) {
+            if (relations[parseInt(filters[k].id, 10)][parseInt(id, 10)]) {
+                return true;
+            }
+        }
+    
+        return false;
     }
 
     handleSortIndice(field, direction) {
@@ -132,6 +152,10 @@ class ContactsTable extends React.Component {
                         {sortedIndice.length > 0 && sortedIndice.map((sortedIndex, idx) => {
                             const contact = contacts[sortedIndex];
                             const checked = filters.filter(f => f.id === contact.id).length;
+
+                            if (!this.isRelated(contact.id)) {
+                                return null;
+                            }
 
                             return (
                                 <TRow key={`contact-${contact.id}`}>

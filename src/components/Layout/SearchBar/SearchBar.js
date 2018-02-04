@@ -41,7 +41,7 @@ class SearchBar extends React.Component {
 
         return (
             <div className={className}>
-                <Form inline>
+                <Form inline onSubmit={(e) => e.preventDefault()}>
                     <FormGroup controlId="formInlineSearch">
                         <ControlLabel>
                             ActivePrime Search
@@ -57,6 +57,7 @@ class SearchBar extends React.Component {
                         )}
                         {(isSearch) && (
                             <Button
+                                type="submit"
                                 className="btn-search"
                                 bsStyle="danger"
                                 onClick={() => onSubmit(this.state.term)}
