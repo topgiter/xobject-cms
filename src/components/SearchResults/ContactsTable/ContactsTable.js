@@ -1,6 +1,7 @@
 // Libraries
 import React from 'react';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash/isEqual';
 
 // Componets
 import TTitle from '../../Table/TTitle';
@@ -34,18 +35,78 @@ class ContactsTable extends React.Component {
         super(props);
 
         this.state = {
-            showTable: true
+            showTable: true,
+            sortingColumn: null,
+            sortedIndice: [...Array(props.contacts.length).keys()], // Generate [0..n]
         };
+
+        this.handleClickTableHeader = this.handleClickTableHeader.bind(this);
+        this.handleSortIndice = this.handleSortIndice.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!isEqual(nextProps.contacts, this.props.contacts)) {
+            this.setState({
+                sortingColumn: null,
+                sortedIndice:[...Array(nextProps.contacts.length).keys()]
+            });
+        }
+    }
+
+    handleSortIndice(field, direction) {
+        const contacts = this.props.contacts;
+        let indices = this.state.sortedIndice;
+        field = field.toLowerCase();
+
+        indices.sort((a, b) => contacts[a][field] < contacts[b][field]);
+
+        if (direction === 'desc') {
+            indices.reverse();
+        }
+
+        return indices;
+    }
+
+    handleClickTableHeader(column) {
+        const { sortingColumn } = this.state;
+
+        if (!sortingColumn || sortingColumn.field !== column.title) {
+            this.setState({
+                sortingColumn: {
+                    field: column.title,
+                    direction: 'asc',
+                    sortedIndice: this.handleSortIndice(column.title, 'asc')
+                }
+            });
+        } else {
+            if (sortingColumn.direction === 'asc') {
+                this.setState({
+                    sortingColumn: {
+                        field: column.title,
+                        direction: 'desc',
+                        sortedIndice: this.handleSortIndice(column.title, 'desc')
+                    }
+                });
+            } else {
+                this.setState({
+                    sortingColumn: null,
+                    sortedIndice: this.state.sortedIndice.sort()
+                });
+            }
+        }
     }
 
     render() {
         const { contacts, filters, handleActiveWindow, onToggleFilter } = this.props;
-        const { showTable } = this.state;
+        const { showTable, sortedIndice, sortingColumn } = this.state;
         const header = [
             { title: '' },
             { title: '' },
             { title: '' },
-            { title: 'Match', sorting: 'sort' },
+            {
+                title: 'Match',
+                sorting: sortingColumn && sortingColumn.field === 'Match' ? sortingColumn.direction : 'sort'
+            },
             { title: 'Name' },
             { title: 'City' },
             { title: 'State' },
@@ -66,8 +127,10 @@ class ContactsTable extends React.Component {
                     <Table
                         header={header}
                         columnsWidths={columnsWidths}
+                        onHeaderClick={this.handleClickTableHeader}
                     >
-                        {contacts.length > 0 && contacts.map((contact, idx) => {
+                        {sortedIndice.length > 0 && sortedIndice.map((sortedIndex, idx) => {
+                            const contact = contacts[sortedIndex];
                             const checked = filters.filter(f => f.id === contact.id).length;
 
                             return (
@@ -92,7 +155,7 @@ class ContactsTable extends React.Component {
                             );
                         })}
 
-                        {contacts.length === 0 && (
+                        {sortedIndice.length === 0 && (
                             <TRow>
                                 <TCell colSpan={8} align="center">No Results</TCell>
                             </TRow>
