@@ -52,6 +52,7 @@ class SearchBar extends React.Component {
                                 type="text"
                                 placeholder="search..."
                                 value={this.state.term}
+                                autoComplete="off"
                                 onChange={(e) => this.setState({ term: e.target.value })}
                             />
                         )}
