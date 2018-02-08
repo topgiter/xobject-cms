@@ -1,0 +1,47 @@
+.oracle-sales-cloud-options {
+    margin-top: 20px;
+    position: relative;
+
+    .options-title {
+        font-weight: 700;
+    }
+
+    .question-icon {
+        margin-left: 4px;
+    }
+
+    .checkbox {
+        input[type="checkbox"] {
+            top: -3px;
+        }
+    }
+
+    .objects-list {
+        list-style: none;
+        padding-left: 20px;
+
+        li {
+            display: flex;
+            padding-left: 10px;
+            padding-top: 5px;
+            border-radius: 3px;
+
+            .checkbox {
+                display: inline-block;
+                margin: 0;
+            }
+
+            &:hover {
+                background-color: #eee;
+            }
+
+            &.active, &.focus {
+                background-color: #dddddd;
+            }
+        }
+    }
+
+    .fields-content {
+        padding-left: 20px;
+    }
+}

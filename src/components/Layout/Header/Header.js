@@ -73,7 +73,7 @@ const Header = ({
 
             {(isSearch) && (
                 <div className="search-time">
-                    Search time: 2.0000s
+                    Search time: 2s
                 </div>
             )}
         </div>

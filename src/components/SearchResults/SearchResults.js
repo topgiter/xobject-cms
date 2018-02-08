@@ -1,5 +1,5 @@
 // Libraies
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
@@ -29,6 +29,12 @@ export const ACTIVE_WIN_TYPE = {
     CONFIG_VIEW: 'CONFIG_VIEW',
 };
 
+export const MENU_TYPE = {
+    ORACLE_SALE_CLOUD: 'ORACLE_SALE_CLOUD',
+    CORE_BANKING_SYSTEM: 'CORE_BANKING_SYSTEM',
+    BACK_OFFICE_SYSTEM: 'BACK_OFFICE_SYSTEM',
+};
+
 // Prop types
 const propTypes = {
     term: PropTypes.string,
@@ -40,7 +46,7 @@ const defaultProps = {
     term: '',
 };
 
-class SearchResults extends React.Component {
+class SearchResults extends Component {
     constructor(props) {
         super(props);
 
@@ -48,36 +54,219 @@ class SearchResults extends React.Component {
             isLoading: false,
             activeWindow: ACTIVE_WIN_TYPE.SEARCH_RESULTS,
             filters: [],
-            accounts: [
-                {
-                    name: 'bob',
-                    city: '',
-                    state: '',
-                    country: '',
-                    owner: '',
-                },
-            ],
+            accounts: [],
             contacts: [],
-            activities: [
-                {
-                    owner: 'bob',
-                    match: '100%',
-                    subject: 'Send Proposal',
-                    priority: 'High',
-                    assignedTo: 'John Dunbar',
-                    dueDate: '3/1/18',
-                    status: 'In Progress',
-                },
-            ],
-            opportunities: [
-                {
-                    owner: 'bob',
-                    opportunityName: 'sample opp',
-                    accountName: 'xyz',
-                    primaryContract: 'my contract',
-                },
-            ],
+            activities: [],
+            opportunities: [],
             coreBankSystems: [],
+            options: {
+                ORACLE_SALE_CLOUD: {
+                    global: {
+                        label: 'Search in Oracle Sales Cloud Results',
+                        value: true,
+                    },
+                    accountsFields: [
+                        {
+                            label: 'Account Name',
+                            value: true,
+                        },
+                        {
+                            label: 'Account City',
+                            value: true,
+                        },
+                        {
+                            label: 'Account State',
+                            value: true,
+                        },
+                        {
+                            label: 'Account Country',
+                            value: true,
+                        },
+                        {
+                            label: 'Account Email',
+                            value: true,
+                        },
+                    ],
+                    contactsFields: [
+                        {
+                            label: 'Contact Name',
+                            value: true,
+                        },
+                        {
+                            label: 'Contact City',
+                            value: true,
+                        },
+                        {
+                            label: 'Contact State',
+                            value: true,
+                        }
+                    ],
+                    leadsFields: [
+                        {
+                            label: 'Lead Name',
+                            value: true,
+                        },
+                        {
+                            label: 'Lead City',
+                            value: true,
+                        },
+                        {
+                            label: 'Lead tate',
+                            value: true,
+                        },
+                    ],
+                    activitiesFields: [
+                        {
+                            label: 'Account Name',
+                            value: true,
+                        },
+                        {
+                            label: 'City',
+                            value: true,
+                        },
+                        {
+                            label: 'State',
+                            value: true,
+                        },
+                        {
+                            label: 'Country',
+                            value: true,
+                        },
+                        {
+                            label: 'Email',
+                            value: true,
+                        },
+                        {
+                            label: 'Phone',
+                            value: true,
+                        },
+                        {
+                            label: 'Title',
+                            value: true,
+                        },
+                    ],
+                    opportunitiesFields: [
+                        {
+                            label: 'Account Name',
+                            value: true,
+                        },
+                        {
+                            label: 'City',
+                            value: true,
+                        },
+                        {
+                            label: 'State',
+                            value: true,
+                        },
+                        {
+                            label: 'Country',
+                            value: true,
+                        },
+                        {
+                            label: 'Email',
+                            value: true,
+                        },
+                        {
+                            label: 'Phone',
+                            value: true,
+                        },
+                        {
+                            label: 'Title',
+                            value: true,
+                        },
+                    ],
+                    objects: [
+                        {
+                            label: 'All',
+                            value: true,
+                        },
+                        {
+                            label: 'Accounts',
+                            value: true,
+                        },
+                        {
+                            label: 'Contacts',
+                            value: true,
+                        },
+                        {
+                            label: 'Leads',
+                            value: true,
+                        },
+                        {
+                            label: 'Activities',
+                            value: true,
+                        },
+                        {
+                            label: 'Opportunities',
+                            value: true,
+                        },
+                    ],
+                },
+                CORE_BANKING_SYSTEM: {
+                    global: {
+                        label: 'Search in Core Banking Results',
+                        value: true,
+                    },
+                    fields: [
+                        {
+                            label: 'Member Name',
+                            value: true,
+                        },
+                        {
+                            label: 'Member Id',
+                            value: true,
+                        },
+                        {
+                            label: 'Investment Account',
+                            value: true,
+                        },
+                        {
+                            label: 'Investment Account Desc',
+                            value: true,
+                        },
+                        {
+                            label: 'Investment Account Balance',
+                            value: true,
+                        },
+                        {
+                            label: 'Next Maturity Date',
+                            value: true,
+                        },
+                        {
+                            label: 'Banking Account',
+                            value: true,
+                        },
+                        {
+                            label: 'Banking Account Balance',
+                            value: true,
+                        },
+                    ],
+                },
+                BACK_OFFICE_SYSTEM: {
+                    global: {
+                        label: 'Search in Back Office System Results',
+                        value: true,
+                    },
+                    fields: [
+                        {
+                            label: 'Inventory #',
+                            value: true,
+                        },
+                        {
+                            label: 'Product Id',
+                            value: true,
+                        },
+                        {
+                            label: 'Product Name',
+                            value: true,
+                        },
+                        {
+                            label: 'Product Owner',
+                            value: true,
+                        },
+                    ],
+                }
+            }
         };
 
         this.fetchResults = this.fetchResults.bind(this);
@@ -85,6 +274,7 @@ class SearchResults extends React.Component {
         this.handleActiveWindow = this.handleActiveWindow.bind(this);
         this.handleRemoveFilter = this.handleRemoveFilter.bind(this);
         this.handleToggleFilter = this.handleToggleFilter.bind(this);
+        this.handleChangeOptions = this.handleChangeOptions.bind(this);
     }
 
     componentDidMount() {
@@ -95,7 +285,7 @@ class SearchResults extends React.Component {
 
     // Emulate filtering in backend
     filterMockData(term) {
-        const { osc, financial } = mockData;
+        const { osc, financial, accounts, activities, opportunities } = mockData;
 
         let contacts, coreBankSystems;
 
@@ -121,19 +311,22 @@ class SearchResults extends React.Component {
                 coreBankSystems = [];
         }
 
-        return { contacts, coreBankSystems };
+        return { contacts, coreBankSystems, accounts, activities, opportunities };
     }
 
     fetchResults(term) {
         this.setState({ isLoading: true });
 
         setTimeout(() => {
-            const { contacts, coreBankSystems } = this.filterMockData(term);
+            const { contacts, coreBankSystems, accounts, activities, opportunities } = this.filterMockData(term);
 
             this.setState({
                 isLoading: false,
                 contacts,
                 coreBankSystems,
+                accounts,
+                activities,
+                opportunities,
             })
         }, 1000)
     }
@@ -173,26 +366,66 @@ class SearchResults extends React.Component {
         }
     }
 
+    handleChangeOptions(menu, field, value, idx) {
+        if (field === 'global') {
+            this.setState({
+                options: {
+                    ...this.state.options,
+                    [menu]: {
+                        ...this.state.options[menu],
+                        global: {
+                            ...this.state.options[menu].global,
+                            value
+                        }
+                    }
+                }
+            });
+        } else {
+            this.setState({
+                options: {
+                    ...this.state.options,
+                    [menu]: {
+                        ...this.state.options[menu],
+                        [field]: this.state.options[menu][field].map((f, index) => {
+                            if (idx === index) {
+                                return {
+                                    label: f.label,
+                                    value,
+                                };
+                            }
+
+                            return f;
+                        })
+                    }
+                }
+            });
+        }
+    }
+
     renderComponent() {
         const { accounts, contacts, activities, opportunities, coreBankSystems, isLoading, filters } = this.state;
 
         return (
             <div className="search-results-view">
-                <SearchResultsInfo />
-                <FilterList
-                    list={filters}
-                    onRemoveFilter={this.handleRemoveFilter}
-                />
-                <AccontsTable accounts={accounts} />
-                <ContactsTable
-                    contacts={contacts}
-                    handleActiveWindow={this.handleActiveWindow}
-                    filters={filters}
-                    onToggleFilter={(item, checked) => this.handleToggleFilter(item, checked)}
-                />
-                <ActivitiesTable activities={activities} />
-                <OpportunitiesTable opportunities={opportunities} />
-                <CoreBankSystemsTable coreBankSystems={coreBankSystems} />
+                {(!isLoading) && (
+                    <Fragment>
+                        <SearchResultsInfo />
+                        <FilterList
+                            list={filters}
+                            onRemoveFilter={this.handleRemoveFilter}
+                        />
+                        <AccontsTable accounts={accounts} />
+                        <ContactsTable
+                            contacts={contacts}
+                            handleActiveWindow={this.handleActiveWindow}
+                            filters={filters}
+                            onToggleFilter={(item, checked) => this.handleToggleFilter(item, checked)}
+                        />
+                        <ActivitiesTable activities={activities} />
+                        <OpportunitiesTable opportunities={opportunities} />
+                        <CoreBankSystemsTable coreBankSystems={coreBankSystems} />
+                    </Fragment>
+                )}
 
                 {(isLoading) && (
                     <Loader />
@@ -200,9 +433,10 @@ class SearchResults extends React.Component {
             </div>
         );
     }
+
     render() {
         const { onClose, term } = this.props;
-        const { activeWindow } = this.state;
+        const { activeWindow, options } = this.state;
 
         return (
             <ReactCSSTransitionGroup
@@ -228,7 +462,10 @@ class SearchResults extends React.Component {
                         <DetailsView handleActiveWindow={this.handleActiveWindow} />
                     )}
                     {(activeWindow === ACTIVE_WIN_TYPE.CONFIG_VIEW) && (
-                        <ConfigView handleActiveWindow={this.handleActiveWindow} />
+                        <ConfigView
+                            options={options}
+                            handleChangeOptions={this.handleChangeOptions}
+                        />
                     )}
                 </div>
             </ReactCSSTransitionGroup>

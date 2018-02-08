@@ -135,6 +135,35 @@
         }
     
     ],
+    "accounts": [
+        {
+            "id": 1,
+            "name": "bob",
+            "city": "",
+            "state": "",
+            "country": "",
+            "owner": ""
+        }
+    ],
+    "activities": [
+        {
+            "owner": "bob",
+            "match": "100%",
+            "subject": "Send Proposal",
+            "priority": "High",
+            "assignedTo": "John Dunbar",
+            "dueDate": "3/1/18",
+            "status": "In Progress"
+        }
+    ],
+    "opportunities": [
+        {
+            "owner": "bob",
+            "opportunityName": "sample opp",
+            "accountName": "xyz",
+            "primaryContract": "my contract"
+        }
+    ],
     "relations": [
         [1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 1, 1, 0, 0, 0, 0, 0, 0, 0],

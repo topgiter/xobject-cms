@@ -6,7 +6,7 @@ import PropTypes from  'prop-types';
 import { Nav, NavItem } from 'react-bootstrap';
 
 // constants
-import { MENU_TYPE } from '../ConfigView';
+import { MENU_TYPE } from '../../SearchResults/SearchResults';
 
 // Styles
 import './Sidebar.css';
