@@ -10,10 +10,12 @@ import TCell from '../../Table/TCell';
 
 // Styles
 import './AccountsTable.css';
+import { config } from '@fortawesome/fontawesome';
 
 // Prop types
 const propTypes = {
-    accounts: PropTypes.array
+    accounts: PropTypes.array,
+    options: PropTypes.array,
 };
 
 const defaultProps = {
@@ -31,19 +33,24 @@ class AccountsTable extends React.Component {
 
     render() {
         const { showTable } = this.state;
-        const { accounts } = this.props;
+        const { accounts, options } = this.props;
 
-        const header = [
+        let configs = {};
+        let header = [
             { title: '' },
             { title: '' },
             { title: '' },
-            { title: 'Name' },
-            { title: 'City' },
-            { title: 'State' },
-            { title: 'Country' },
-            { title: 'Owner' },
         ];
-        const columnsWidths = ['40px', '40px', '40px', '', '', '', '', ''];
+        let columnsWidths = ['40px', '40px', '40px'];
+
+        options.forEach(option => {
+            configs[option.label] = option.value;
+            if (option.value) {
+                columnsWidths.push('');
+                header.push({ title: option.label });
+            }
+        });
+
 
         return (
             <div className="accounts-table">
@@ -66,17 +73,27 @@ class AccountsTable extends React.Component {
                                 </TCell>
                                 <TCell><span className="action">View</span></TCell>
                                 <TCell><span className="action">Go</span></TCell>
-                                <TCell>{account.name}</TCell>
-                                <TCell>{account.city}</TCell>
-                                <TCell>{account.state}</TCell>
-                                <TCell>{account.country}</TCell>
-                                <TCell>{account.owner}</TCell>
+                                {(config.Name) && (
+                                    <TCell>{account.name}</TCell>
+                                )}
+                                {(config.City) && (
+                                    <TCell>{account.city}</TCell>
+                                )}
+                                {(config.State) && (
+                                    <TCell>{account.state}</TCell>
+                                )}
+                                {(config.Country) && (
+                                    <TCell>{account.country}</TCell>
+                                )}
+                                {(config.Owner) && (
+                                    <TCell>{account.owner}</TCell>
+                                )}
                             </TRow>
                         ))}
 
                         {accounts.length === 0 && (
                             <TRow>
-                                <TCell colSpan={8} align="center">No Results</TCell>
+                                <TCell colSpan={header.length} align="center">No Results</TCell>
                             </TRow>
                         )}
                     </Table>

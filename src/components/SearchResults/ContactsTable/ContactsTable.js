@@ -23,6 +23,7 @@ import mockData from '../../../mock/data.json';
 const propTypes = {
     contacts: PropTypes.array,
     filters: PropTypes.array,
+    options: PropTypes.array,
     handleActiveWindow: PropTypes.func,
     onToggleFilter: PropTypes.func,
 };
@@ -117,22 +118,48 @@ class ContactsTable extends React.Component {
     }
 
     render() {
-        const { contacts, filters, handleActiveWindow, onToggleFilter } = this.props;
+        const { contacts, filters, options, handleActiveWindow, onToggleFilter } = this.props;
         const { showTable, sortedIndice, sortingColumn } = this.state;
-        const header = [
+
+
+        let header = [
             { title: '' },
             { title: '' },
             { title: '' },
-            {
-                title: 'Match',
-                sorting: sortingColumn && sortingColumn.field === 'Match' ? sortingColumn.direction : 'sort'
-            },
-            { title: 'Name' },
-            { title: 'City' },
-            { title: 'State' },
-            { title: 'Title' },
         ];
-        const columnsWidths = ['40px', '40px', '40px', '80px', '', '', '', ''];
+        let columnsWidths = ['40px', '40px', '40px'];
+        let configs = {};
+
+        options.forEach(option => {
+            configs[option.label] = option.value;
+            if (option.value) {
+                if (option.label === 'Match') {
+                    header.push({
+                        title: option.label,
+                        sorting: sortingColumn && sortingColumn.field === 'Match' ? sortingColumn.direction : 'sort'
+                    });
+                    columnsWidths.push('80px');
+                } else {
+                    header.push({ title: option.label });
+                    columnsWidths.push('');
+                }
+            }
+        });
+
+        // const header = [
+        //     { title: '' },
+        //     { title: '' },
+        //     { title: '' },
+        //     {
+        //         title: 'Match',
+        //         sorting: sortingColumn && sortingColumn.field === 'Match' ? sortingColumn.direction : 'sort'
+        //     },
+        //     { title: 'Name' },
+        //     { title: 'City' },
+        //     { title: 'State' },
+        //     { title: 'Title' },
+        // ];
+        // const columnsWidths = ['40px', '40px', '40px', '80px', '', '', '', ''];
 
         return (
             <div className="contacts-table">
@@ -170,11 +197,21 @@ class ContactsTable extends React.Component {
                                         <span className="action" onClick={() => handleActiveWindow(ACTIVE_WIN_TYPE.DETAILS_VIEW)}>View</span>
                                     </TCell>
                                     <TCell><span className="action">Go</span></TCell>
-                                    <TCell>{contact.match}</TCell>
-                                    <TCell>{contact.full_name}</TCell>
-                                    <TCell>{contact.city}</TCell>
-                                    <TCell>{contact.state}</TCell>
-                                    <TCell>{contact.title}</TCell>
+                                    {(configs.Match) && (
+                                        <TCell>{contact.match}</TCell>
+                                    )}
+                                    {(configs.Name) && (
+                                        <TCell>{contact.full_name}</TCell>
+                                    )}
+                                    {(configs.City) && (
+                                        <TCell>{contact.city}</TCell>
+                                    )}
+                                    {(configs.State) && (
+                                        <TCell>{contact.state}</TCell>
+                                    )}
+                                    {(configs.Title) && (
+                                        <TCell>{contact.title}</TCell>
+                                    )}
                                 </TRow>
                             );
                         })}

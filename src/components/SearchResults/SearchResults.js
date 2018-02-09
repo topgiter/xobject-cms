@@ -67,37 +67,45 @@ class SearchResults extends Component {
                     },
                     accountsFields: [
                         {
-                            label: 'Account Name',
+                            label: 'Name',
                             value: true,
                         },
                         {
-                            label: 'Account City',
+                            label: 'City',
                             value: true,
                         },
                         {
-                            label: 'Account State',
+                            label: 'State',
                             value: true,
                         },
                         {
-                            label: 'Account Country',
+                            label: 'Country',
                             value: true,
                         },
                         {
-                            label: 'Account Email',
+                            label: 'Owner',
                             value: true,
                         },
                     ],
                     contactsFields: [
                         {
-                            label: 'Contact Name',
+                            label: 'Match',
                             value: true,
                         },
                         {
-                            label: 'Contact City',
+                            label: 'Name',
                             value: true,
                         },
                         {
-                            label: 'Contact State',
+                            label: 'City',
+                            value: true,
+                        },
+                        {
+                            label: 'State',
+                            value: true,
+                        },
+                        {
+                            label: 'Title',
                             value: true,
                         }
                     ],
@@ -117,61 +125,49 @@ class SearchResults extends Component {
                     ],
                     activitiesFields: [
                         {
-                            label: 'Account Name',
+                            label: 'Owner',
                             value: true,
                         },
                         {
-                            label: 'City',
+                            label: 'Match',
                             value: true,
                         },
                         {
-                            label: 'State',
+                            label: 'Subject',
                             value: true,
                         },
                         {
-                            label: 'Country',
+                            label: 'Priority',
                             value: true,
                         },
                         {
-                            label: 'Email',
+                            label: 'Assigned To',
                             value: true,
                         },
                         {
-                            label: 'Phone',
+                            label: 'Due Date',
                             value: true,
                         },
                         {
-                            label: 'Title',
+                            label: 'Status',
                             value: true,
                         },
                     ],
                     opportunitiesFields: [
                         {
+                            label: 'Owner',
+                            value: true,
+                        },
+                        {
+                            label: 'Opportunity Name',
+                            value: true,
+                        },
+                        {
                             label: 'Account Name',
                             value: true,
                         },
                         {
-                            label: 'City',
-                            value: true,
-                        },
-                        {
-                            label: 'State',
-                            value: true,
-                        },
-                        {
-                            label: 'Country',
-                            value: true,
-                        },
-                        {
-                            label: 'Email',
-                            value: true,
-                        },
-                        {
-                            label: 'Phone',
-                            value: true,
-                        },
-                        {
-                            label: 'Title',
+                            label: 'Primary Contact',
                             value: true,
                         },
                     ],
@@ -209,23 +205,19 @@ class SearchResults extends Component {
                     },
                     fields: [
                         {
-                            label: 'Member Name',
+                            label: 'Match',
                             value: true,
                         },
                         {
-                            label: 'Member Id',
+                            label: 'Name',
                             value: true,
                         },
                         {
-                            label: 'Investment Account',
+                            label: 'Invest Acct Desc',
                             value: true,
                         },
                         {
-                            label: 'Investment Account Desc',
-                            value: true,
-                        },
-                        {
-                            label: 'Investment Account Balance',
+                            label: 'Invest Acct Balance',
                             value: true,
                         },
                         {
@@ -233,11 +225,11 @@ class SearchResults extends Component {
                             value: true,
                         },
                         {
-                            label: 'Banking Account',
+                            label: 'Banking Acct',
                             value: true,
                         },
                         {
-                            label: 'Banking Account Balance',
+                            label: 'Banking Acct Balance',
                             value: true,
                         },
                     ],
@@ -403,7 +395,12 @@ class SearchResults extends Component {
     }
 
     renderComponent() {
-        const { accounts, contacts, activities, opportunities, coreBankSystems, isLoading, filters } = this.state;
+        const { accounts, contacts, activities, opportunities, coreBankSystems, isLoading, filters, options } = this.state;
+        const oscConfigs = {};
+
+        options.ORACLE_SALE_CLOUD.objects.forEach(object => {
+            oscConfigs[object.label] = object.value;
+        });
 
         return (
             <div className="search-results-view">
@@ -414,15 +411,34 @@ class SearchResults extends Component {
                             list={filters}
                             onRemoveFilter={this.handleRemoveFilter}
                         />
-                        <AccontsTable accounts={accounts} />
-                        <ContactsTable
-                            contacts={contacts}
-                            handleActiveWindow={this.handleActiveWindow}
-                            filters={filters}
-                            onToggleFilter={(item, checked) => this.handleToggleFilter(item, checked)}
-                        />
-                        <ActivitiesTable activities={activities} />
-                        <OpportunitiesTable opportunities={opportunities} />
+
+                        {(oscConfigs.Accounts) && (
+                            <AccontsTable
+                                accounts={accounts}
+                                options={options.ORACLE_SALE_CLOUD.accountsFields}
+                            />
+                        )}
+                        {(oscConfigs.Contacts) && (
+                            <ContactsTable
+                                contacts={contacts}
+                                options={options.ORACLE_SALE_CLOUD.contactsFields}
+                                handleActiveWindow={this.handleActiveWindow}
+                                filters={filters}
+                                onToggleFilter={(item, checked) => this.handleToggleFilter(item, checked)}
+                            />
+                        )}
+                        {(oscConfigs.Activities) && (
+                            <ActivitiesTable
+                                activities={activities}
+                                options={options.ORACLE_SALE_CLOUD.activitiesFields}
+                            />
+                        )}
+                        {(oscConfigs.Opportunities) && (
+                            <OpportunitiesTable
+                                opportunities={opportunities}
+                                options={options.ORACLE_SALE_CLOUD.opportunitiesFields}
+                            />
+                        )}
                         <CoreBankSystemsTable coreBankSystems={coreBankSystems} />
                     </Fragment>
                 )}
@@ -457,7 +473,9 @@ class SearchResults extends Component {
                         onSubmit={(term) => this.handleSearch(term)}
                     />
 
-                    {(activeWindow === ACTIVE_WIN_TYPE.SEARCH_RESULTS) && this.renderComponent()}
+                    {(activeWindow === ACTIVE_WIN_TYPE.SEARCH_RESULTS) && (
+                        this.renderComponent()
+                    )}
                     {(activeWindow === ACTIVE_WIN_TYPE.DETAILS_VIEW) && (
                         <DetailsView handleActiveWindow={this.handleActiveWindow} />
                     )}
