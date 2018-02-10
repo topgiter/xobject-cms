@@ -13,7 +13,8 @@ import './CoreBankSystemTable.css';
 
 // Prop types
 const propTypes = {
-    coreBankSystems: PropTypes.array
+    coreBankSystems: PropTypes.array,
+    options: PropTypes.array,
 };
 
 const defaultProps = {
@@ -35,20 +36,22 @@ class CoreBankSystemTable extends React.Component {
 
     render() {
         const { showTable } = this.state;
-        const { coreBankSystems } = this.props;
+        const { coreBankSystems, options } = this.props;
 
-        const header = [
+        let header = [
             { title: '' },
             { title: '' },
-            { title: 'Match' },
-            { title: 'Name' },
-            { title: 'Invest Acct Desc' },
-            { title: 'Invest Acct Balance' },
-            { title: 'Next Maturity Date' },
-            { title: 'Banking Acct' },
-            { title: 'Banking Acct Balance' },
         ];
-        const columnsWidths = ['40px', '40px', '', '', '', '', '', '', ''];
+        let columnsWidths = ['40px', '40px'];
+        let configs = {};
+
+        options.forEach(option => {
+            configs[option.label] = option.value;
+            if (option.value) {
+                header.push({ title: option.label });
+                columnsWidths.push('');
+            }
+        });
 
         return (
             <div className="core-bank-system-table">
@@ -69,29 +72,43 @@ class CoreBankSystemTable extends React.Component {
                             <TRow key={`coreBankSystems-${coreBankSystem.id}`}>
                                 <TCell><span className="action">Update</span></TCell>
                                 <TCell><span className="action">Copy</span></TCell>
-                                <TCell>{coreBankSystem.match}</TCell>
-                                <TCell>{coreBankSystem.full_name}</TCell>
-                                <TCell>
-                                    <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.investment_account_desc)} />
-                                </TCell>
-                                <TCell>
-                                    <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.investment_account_balance)} />
-                                </TCell>
-                                <TCell>
-                                    <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.next_maturity_date)} />
-                                </TCell>
-                                <TCell>
-                                    <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.banking_account)} />
-                                </TCell>
-                                <TCell>
-                                    <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.banking_account_balance)} />
-                                </TCell>
+                                {(configs.Match) && (
+                                    <TCell>{coreBankSystem.match}</TCell>
+                                )}
+                                {(configs.Name) && (
+                                    <TCell>{coreBankSystem.full_name}</TCell>
+                                )}
+                                {(configs['Invest Acct Desc']) && (
+                                    <TCell>
+                                        <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.investment_account_desc)} />
+                                    </TCell>
+                                )}
+                                {(configs['Invest Acct Balance']) && (
+                                    <TCell>
+                                        <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.investment_account_balance)} />
+                                    </TCell>
+                                )}
+                                {(configs['Next Maturity Date']) && (
+                                    <TCell>
+                                        <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.next_maturity_date)} />
+                                    </TCell>
+                                )}
+                                {(configs['Banking Acct']) && (
+                                    <TCell>
+                                        <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.banking_account)} />
+                                    </TCell>
+                                )}
+                                {(configs['Banking Acct Balance']) && (
+                                    <TCell>
+                                        <div dangerouslySetInnerHTML={createMarkup(coreBankSystem.banking_account_balance)} />
+                                    </TCell>
+                                )}
                             </TRow>
                         ))}
 
                         {coreBankSystems.length === 0 && (
                             <TRow>
-                                <TCell colSpan={9} align="center">No Results</TCell>
+                                <TCell colSpan={header.length} align="center">No Results</TCell>
                             </TRow>
                         )}
                     </Table>

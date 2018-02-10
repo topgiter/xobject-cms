@@ -412,34 +412,44 @@ class SearchResults extends Component {
                             onRemoveFilter={this.handleRemoveFilter}
                         />
 
-                        {(oscConfigs.Accounts) && (
-                            <AccontsTable
-                                accounts={accounts}
-                                options={options.ORACLE_SALE_CLOUD.accountsFields}
+                        {(options.ORACLE_SALE_CLOUD.global.value) && (
+                            <Fragment>
+                                {(oscConfigs.Accounts) && (
+                                    <AccontsTable
+                                        accounts={accounts}
+                                        options={options.ORACLE_SALE_CLOUD.accountsFields}
+                                    />
+                                )}
+                                {(oscConfigs.Contacts) && (
+                                    <ContactsTable
+                                        contacts={contacts}
+                                        options={options.ORACLE_SALE_CLOUD.contactsFields}
+                                        handleActiveWindow={this.handleActiveWindow}
+                                        filters={filters}
+                                        onToggleFilter={(item, checked) => this.handleToggleFilter(item, checked)}
+                                    />
+                                )}
+                                {(oscConfigs.Activities) && (
+                                    <ActivitiesTable
+                                        activities={activities}
+                                        options={options.ORACLE_SALE_CLOUD.activitiesFields}
+                                    />
+                                )}
+                                {(oscConfigs.Opportunities) && (
+                                    <OpportunitiesTable
+                                        opportunities={opportunities}
+                                        options={options.ORACLE_SALE_CLOUD.opportunitiesFields}
+                                    />
+                                )}
+                            </Fragment>
+                        )}
+
+                        {(options.CORE_BANKING_SYSTEM.global.value) && (
+                            <CoreBankSystemsTable
+                                coreBankSystems={coreBankSystems}
+                                options={options.CORE_BANKING_SYSTEM.fields}
                             />
                         )}
-                        {(oscConfigs.Contacts) && (
-                            <ContactsTable
-                                contacts={contacts}
-                                options={options.ORACLE_SALE_CLOUD.contactsFields}
-                                handleActiveWindow={this.handleActiveWindow}
-                                filters={filters}
-                                onToggleFilter={(item, checked) => this.handleToggleFilter(item, checked)}
-                            />
-                        )}
-                        {(oscConfigs.Activities) && (
-                            <ActivitiesTable
-                                activities={activities}
-                                options={options.ORACLE_SALE_CLOUD.activitiesFields}
-                            />
-                        )}
-                        {(oscConfigs.Opportunities) && (
-                            <OpportunitiesTable
-                                opportunities={opportunities}
-                                options={options.ORACLE_SALE_CLOUD.opportunitiesFields}
-                            />
-                        )}
-                        <CoreBankSystemsTable coreBankSystems={coreBankSystems} />
                     </Fragment>
                 )}
 
